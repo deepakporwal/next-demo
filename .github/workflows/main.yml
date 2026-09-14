@@ -11,7 +11,7 @@ on:
       - develop
       
 # Allow manual execution from GitHub Actions
-  workflow_dispatch:
+workflow_dispatch:
   
 jobs:
   build:
