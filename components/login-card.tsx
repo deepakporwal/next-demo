@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type LoginResponse = {
   token?: string;
@@ -11,21 +11,15 @@ type LoginResponse = {
 const TOKEN_STORAGE_KEY = "demo-auth-token";
 
 export default function LoginCard() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(() => {
+    if (typeof window === "undefined") {
+      return "";
+    }
+
+    return window.localStorage.getItem(TOKEN_STORAGE_KEY) || "";
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    const savedToken = window.localStorage.getItem(TOKEN_STORAGE_KEY) || "";
-
-    if (savedToken) {
-      setToken(savedToken);
-    }
-  }, []);
 
   const handleGenerateToken = async () => {
     setLoading(true);
